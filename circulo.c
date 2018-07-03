@@ -5,25 +5,25 @@
 #include "circulo.h"
 
 typedef struct circulo{
-    int *ord;
+    unsigned long int *ord;
     int *i;       /*indentificador*/
     float *x,*y;   /*coordenadas*/
     float *r;      /*raio do Circulo*/
     char *cor1,*cor2;    /*cor da borda e do preenchimento*/
 }circulo;
 
-Circulo createCirculo (int *ordem,int pi,char *pcor1,char *pcor2,float pr,float px,float py)
+Circulo createCirculo (unsigned long int ordem,int pi,char *pcor1,char *pcor2,float pr,float px,float py)
 {
     circulo *circ;
-    circ=malloc (sizeof(Circulo));
-    circ->ord=malloc (sizeof(int));
+    circ=(circulo *)malloc (sizeof(circulo));
+    circ->ord=malloc (sizeof(unsigned long int));
     circ->i=malloc (sizeof(int));
     circ->x=malloc (sizeof(float));
     circ->y=malloc (sizeof(float));
     circ->r=malloc (sizeof(float));
     circ->cor1=malloc ((strlen(pcor1)+1)*sizeof(char));
     circ->cor2=malloc ((strlen(pcor2)+1)*sizeof(char));
-    *(circ->ord)=*ordem;
+    *(circ->ord)=ordem;
     *(circ->i)=pi;
     *(circ->x)=px;
     *(circ->y)=py;
@@ -37,7 +37,7 @@ int devolveStrlencor1Circulo(Circulo *pcirc)
 {
     circulo *circ = (circulo *)pcirc;
     int tam;
-    tam=strlen (circ->cor1);
+    tam=strlen(circ->cor1);
     return (tam);
 }
 
@@ -45,7 +45,7 @@ int devolveStrlencor2Circulo(Circulo *pcirc)
 {
     circulo *circ = (circulo *)pcirc;
     int tam;
-    tam=strlen (circ->cor2);
+    tam=strlen(circ->cor2);
     return (tam);
 }
 
@@ -67,7 +67,7 @@ float devolveRaio(Circulo *pcirc)
     return *(circ->r);
 }
 
-int devolveNOrdemCirculo(Circulo *pcirc)
+unsigned long int devolveNOrdemCirculo(Circulo *pcirc)
 {
     circulo *circ = (circulo *)pcirc;
     return *(circ->ord);

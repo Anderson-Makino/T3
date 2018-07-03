@@ -4,32 +4,9 @@
 
 #include "args.h"
 
-char *arqEntrada (char *entrada,int i,char *argv[])
+char *verificF(int argc,char *argv[])
 {
-	int j;
-	entrada=(char *) malloc(strlen((argv[i])+1)*sizeof(char));
-	for (j=0;j<strlen(argv[i]);j++)
-	{
-		entrada[j]=argv[i] [j];
-	}
-	entrada[j]='\0';
-	return(entrada);
-}
-
-char *arqSaida (char *diretorio,int i,char *argv[])
-{
-	int j;
-	diretorio=(char *) malloc(strlen(argv[i]+2)*sizeof(char));
-	for (j=0;j<strlen(argv[i]);j++)
-	{
-		diretorio[j]=argv[i] [j];
-	}
-	diretorio[j]='\0';
-	return(diretorio);
-}
-
-char *verificF(char *entrada,int argc,char *argv[])
-{
+	char *entrada;
 	int i;
 	for (i=1;i<argc;i++)
 	{
@@ -37,15 +14,17 @@ char *verificF(char *entrada,int argc,char *argv[])
 	{
 		if (argv[i][1]=='f')
 		{
-			entrada=arqEntrada(entrada,i+1,argv);
+			entrada=(char *) malloc((strlen(argv[i+1])+1)*sizeof(char));
+			strcpy(entrada,argv[i+1]);
+			return (entrada);
 		}
 	}
 	}
-	return (entrada);
 }
 
-char *verificO(char *diretorio,int argc,char *argv[])
+char *verificO(int argc,char *argv[])
 {
+	char *diretorio;
 	int i;
 	for (i=1;i<argc;i++)
 	{
@@ -53,9 +32,10 @@ char *verificO(char *diretorio,int argc,char *argv[])
 	{
 		if(argv[i] [1]=='o')
 		{
-			diretorio=arqSaida(diretorio,i+1,argv);
+			diretorio=(char *) malloc((strlen(argv[i+1])+2)*sizeof(char));
+			strcpy(diretorio,argv[i+1]);
+			return (diretorio);
 		}
 	}
 	}
-	return (diretorio);
 }

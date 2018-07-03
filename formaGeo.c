@@ -6,13 +6,21 @@
 #include "formaGeo.h"
 #include "circulo.h"
 #include "retangulo.h"
+#include "quadra.h"
+#include "hidrante.h"
+#include "semaforo.h"
+#include "torre.h"
 #include "list.h"
-#include "concatena.h"
+#include "funcoes.h"
 
 
 typedef struct formasGeometricas{
     Lista *circle;
     Lista *Rectangle;
+    Lista *Block;
+    Lista *Hydrant;
+    Lista *Semaphore;
+    Lista *Tower;
 
 }formasGeometricas;
 
@@ -23,10 +31,15 @@ void nCirculo (int *ndefault,char *ch)
 
 fg createFG ()
 {
-    formasGeometricas *fg;
-    fg->circle=createLista ();
-    fg->Rectangle=createLista ();
-    return fg;
+    formasGeometricas *fgeo;
+    fgeo=malloc(sizeof (formasGeometricas));
+    fgeo->circle=createLista ();
+    fgeo->Rectangle=createLista ();
+    fgeo->Block=createLista ();
+    fgeo->Hydrant=createLista ();
+    fgeo->Semaphore=createLista ();
+    fgeo->Tower=createLista ();
+    return fgeo;
 }
 
 void addCircle (fg *fgeo,Circulo *circ)
@@ -43,7 +56,35 @@ void addRet (fg *fgeo,Retangulo *ret)
   p=insert(f->Rectangle,ret);
 }
 
-Circulo GetCircId(fg *fgeo, int id)
+void addBlock(fg *fgeo,Quadra *quad)
+{
+  formasGeometricas *f = (formasGeometricas *)fgeo;
+  Posic *p;
+  p=insert(f->Block,quad);
+}
+
+void addHydrant(fg *fgeo,Hidrante *hid)
+{
+  formasGeometricas *f = (formasGeometricas *)fgeo;
+  Posic *p;
+  p=insert(f->Hydrant,hid);
+}
+
+void addSemaphore(fg *fgeo,Semaforo *sem)
+{
+  formasGeometricas *f = (formasGeometricas *)fgeo;
+  Posic *p;
+  p=insert(f->Semaphore,sem);
+}
+
+void addTower(fg *fgeo,Torre *tor)
+{
+  formasGeometricas *f = (formasGeometricas *)fgeo;
+  Posic *p;
+  p=insert(f->Tower,tor);
+}
+
+Circulo GetCircId(fg *fgeo,int id)
 {
   formasGeometricas *f=(formasGeometricas *)fgeo;
   Posic *p;
@@ -61,7 +102,7 @@ Circulo GetCircId(fg *fgeo, int id)
   return NULL;
 }
 
-Retangulo GetRectId(fg *fgeo, int id)
+Retangulo GetRectId(fg *fgeo,int id)
 {
   formasGeometricas *f=(formasGeometricas *)fgeo;
   Posic *p;
@@ -80,7 +121,64 @@ Retangulo GetRectId(fg *fgeo, int id)
   return NULL;
 }
 
-Circulo GetCircOrd(fg *fgeo, int ord)
+Hidrante GetHydId(fg *fgeo,char id)
+{
+  formasGeometricas *f=(formasGeometricas *)fgeo;
+  Posic *p;
+  Hidrante *hid;
+
+  p=getFirst(f->Hydrant);
+  while(p!=NULL)
+  {
+    hid=get(f->Hydrant, p);
+    if(devolveIdHidrante(hid)==id)
+    {
+      return hid;
+    }
+    p=getNext(f->Hydrant,p);
+  }
+  return NULL;
+}
+
+Semaforo GetSemId(fg *fgeo,char id)
+{
+  formasGeometricas *f=(formasGeometricas *)fgeo;
+  Posic *p;
+  Semaforo *sem;
+
+  p=getFirst(f->Semaphore);
+  while(p!=NULL)
+  {
+    sem=get(f->Semaphore, p);
+    if(devolveIdSemaforo(sem)==id)
+    {
+      return sem;
+    }
+    p=getNext(f->Semaphore,p);
+  }
+  return NULL;
+}
+
+Torre GetTorId(fg *fgeo,char id)
+{
+  formasGeometricas *f=(formasGeometricas *)fgeo;
+  Posic *p;
+  Torre *tor;
+
+  p=getFirst(f->Tower);
+  while(p!=NULL)
+  {
+    tor=get(f->Tower, p);
+    if(devolveIdTorre(tor)==id)
+    {
+      return tor;
+    }
+    p=getNext(f->Tower,p);
+  }
+  return NULL;
+}
+
+Circulo GetCircOrd(fg *fgeo, unsigned long int ord)
 {
   formasGeometricas *f=(formasGeometricas *)fgeo;
   Posic *p;
@@ -98,7 +196,7 @@ Circulo GetCircOrd(fg *fgeo, int ord)
   return NULL;
 }
 
-Retangulo GetRectOrd(fg *fgeo, int ord)
+Retangulo GetRectOrd(fg *fgeo, unsigned long int ord)
 {
   formasGeometricas *f=(formasGeometricas *)fgeo;
   Posic *p;
@@ -113,6 +211,82 @@ Retangulo GetRectOrd(fg *fgeo, int ord)
       return r;
     }
     p=getNext(f->Rectangle,p);
+  }
+  return NULL;
+}
+
+Quadra GetBlockOrd(fg *fgeo, unsigned long int ord)
+{
+  formasGeometricas *f=(formasGeometricas *)fgeo;
+  Posic *p;
+  Quadra *quad;
+
+  p=getFirst(f->Block);
+  while(p!=NULL)
+  {
+    quad=get(f->Block, p);
+    if(devolveNOrdemQuadra(quad)==ord)
+    {
+      return quad;
+    }
+    p=getNext(f->Block,p);
+  }
+  return NULL;
+}
+
+Hidrante GetHidOrd(fg *fgeo,unsigned long int ord)
+{
+  formasGeometricas *f=(formasGeometricas *)fgeo;
+  Posic *p;
+  Hidrante *hid;
+
+  p=getFirst(f->Hydrant);
+  while(p!=NULL)
+  {
+    hid=get(f->Hydrant, p);
+    if(devolveNOrdemHidrante(hid)==ord)
+    {
+      return hid;
+    }
+    p=getNext(f->Hydrant,p);
+  }
+  return NULL;
+}
+
+Semaforo GetSemOrd(fg *fgeo, unsigned long int ord)
+{
+  formasGeometricas *f=(formasGeometricas *)fgeo;
+  Posic *p;
+  Semaforo *sem;
+
+  p=getFirst(f->Semaphore);
+  while(p!=NULL)
+  {
+    sem=get(f->Semaphore, p);
+    if(devolveNOrdemSemaforo(sem)==ord)
+    {
+      return sem;
+    }
+    p=getNext(f->Semaphore,p);
+  }
+  return NULL;
+}
+
+Torre GetTorOrd(fg *fgeo, unsigned long int ord)
+{
+  formasGeometricas *f=(formasGeometricas *)fgeo;
+  Posic *p;
+  Torre *tor;
+
+  p=getFirst(f->Tower);
+  while(p!=NULL)
+  {
+    tor=get(f->Tower, p);
+    if(devolveNOrdemTorre(tor)==ord)
+    {
+      return tor;
+    }
+    p=getNext(f->Tower,p);
   }
   return NULL;
 }
@@ -319,7 +493,6 @@ char *distancia (fg *fge,char *ch,char *dio,int *tamdio)
     char *distanciachar;
     char *resultado;
     char funcao[2]="d ";
-    int forma1=0,forma2=0;  /*forma da figura*/
     Circulo *c1,*c2;
     Retangulo *ret1,*ret2;
     fg *fgeo = (fg *)fge;
@@ -335,37 +508,31 @@ char *distancia (fg *fge,char *ch,char *dio,int *tamdio)
         if(c1==NULL)
         {
           ret1=GetRectId(fgeo,j);
+          x1=devolveXRetangulo(ret1);
+          y1=devolveYRetangulo(ret1);
         }
-        if (c1!=NULL)
+        else
         {
             x1=devolveXCirculo(c1);
             y1=devolveYCirculo(c1);
         }
-        else if(ret1!=NULL)
-        {
-          x1=devolveXRetangulo(ret1);
-          y1=devolveYRetangulo(ret1);
-        }
+        printf("x1:%d  y1:%d\n",x1,y1);
     c2=GetCircId(fgeo,j);
         if(c2==NULL)
         {
           ret2=GetRectId(fgeo,j);
+          x2=devolveXRetangulo(ret2);
+          y2=devolveYRetangulo(ret2);
         }
-        if (c2!=NULL)
+        else
         {
             x2=devolveXCirculo(c2);
             y2=devolveYCirculo(c2);
         }
-        else if(ret2!=NULL)
-        {
-          x2=devolveXRetangulo(ret2);
-          y2=devolveYRetangulo(ret2);
-        }
-    if ((c1==NULL || ret1==NULL) || (c2==NULL || ret2==NULL))
+        printf("x2:%d  y2:%d\n",x2,y2);
+    if ((c1==NULL && ret1==NULL) || (c2==NULL && ret2==NULL))
     {
-        resultado=malloc(23*sizeof(char));
-        resultado=" figura nao encontrada";
-        dio=concatena2 (dio,resultado,tamdio);
+        dio=concatena2 (dio," figura nao encontrada",tamdio);
     }
     else
     {
@@ -381,41 +548,105 @@ char *distancia (fg *fge,char *ch,char *dio,int *tamdio)
     return (dio);
 }
 
-void pegaElementsCirc(char *ch,int *element0,char *element1,char *element2,char *element3,char *element4,char *element5,char *element6,int cont)
+void insereSVG (FILE *sig,unsigned long int cont,fg *fgeo)
 {
-    char *info;
-    *element0=cont;
-    info=strtok(ch," ");
-    element1=info;
-    info=strtok(NULL," ");
-    element2=info;
-    info=strtok(NULL," ");
-    element3=info;
-    info=strtok(NULL," ");
-    element4=info;
-    info=strtok(NULL," ");
-    element5=info;
-    info=strtok(NULL," ");
-    element6=info;
+    unsigned long int i;
+    formasGeometricas *f=(formasGeometricas *)fgeo;
+    Circulo *c;
+    Retangulo *r;
+    Quadra *quad;
+    Hidrante *hid;
+    Semaforo *sem;
+    Torre *tor;
+    for (i=0;i<cont;i++)
+    {
+      c=GetCircOrd(f,i);
+        if(c==NULL)
+        {
+          r=GetRectOrd(f,i);
+          if (r==NULL)
+          {
+            quad=GetBlockOrd(f,i);
+            if (quad==NULL)
+            {
+              hid=GetHidOrd(f,i);
+              if (hid==NULL)
+              {
+                sem=GetSemOrd(f,i);
+                if (sem==NULL)
+                {
+                  tor=GetTorOrd(f,i);
+                  //escreveSVGTower (sig,tor);
+                }
+                else 
+                {
+                  //escreveSVGSemaphore (sig,sem);
+                }
+              }
+              else
+              {
+                //escreveSVGHydrant(sig,hid);
+              }
+            }
+            else
+            {
+              //escreveSVGBlock(sig,quad);
+            }
+          }
+            else 
+            {
+            escreveSVGQuad(sig,r);
+            }
+        }
+      else
+      {
+          escreveSVGCirc(sig,c);
+      }
+    }
 }
 
-void pegaElementsRet(char *ch,int *element0,char *element1,char *element2,char *element3,char *element4,char *element5,char *element6,char *element7,int cont)
+void escreveSVGCirc (FILE *sig,Circulo *circ)
 {
-    char *info;
-    *(element0)=cont;
-    info=strtok(ch," ");
-    element1=info;
-    info=strtok(NULL," ");
-    element2=info;
-    info=strtok(NULL," ");
-    element3=info;
-    info=strtok(NULL," ");
-    element4=info;
-    info=strtok(NULL," ");
-    element5=info;
-    info=strtok(NULL," ");
-    element6=info;
-    info=strtok(NULL," ");
-    element7=info;
-    printf("element7:%s\n",element7);
+    char *cor1,*cor2;
+    float raio,x,y;
+    int tam1,tam2;
+    Circulo *c=(Circulo *) circ;
+    tam1=devolveStrlencor1Circulo(c);
+    tam2=devolveStrlencor2Circulo(c);
+    cor1=malloc(sizeof(char)*(tam1+1));
+    cor2=malloc(sizeof(char)*(tam2+1));
+    strcpy(cor1,devolveCor1Circulo(c));
+    strcpy(cor2,devolveCor2Circulo(c));
+    raio=devolveRaio(c);
+    x=devolveXCirculo(c);
+    y=devolveYCirculo(c);
+    fprintf(sig,"<circle cx=\"%f\" cy=\"%f\" r=\"%f\"  stroke-width=\"3\" stroke=\"%s\" fill=\"%s\"/>\n",x,y,raio,cor1,cor2);
+}
+
+void escreveSVGQuad (FILE *sig,Retangulo *ret)
+{
+    char *cor1,*cor2;
+    float altura,largura,x,y;
+    int tam1,tam2;
+    Retangulo *r=(Retangulo *)ret;
+    tam1=devolveStrlencor1Retangulo(r);
+    tam2=devolveStrlencor2Retangulo(r);
+    cor1=malloc(sizeof(char)*(tam1+1));
+    cor2=malloc(sizeof(char)*(tam2+1));
+    strcpy(cor1,devolveCor1Retangulo(r));
+    strcpy(cor2,devolveCor2Retangulo(r));
+    altura=devolveAltura(r);
+    largura=devolveLargura(r);
+    x=devolveXRetangulo(r);
+    y=devolveYRetangulo(r);
+    fprintf(sig,"<rect x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\" stroke=\"%s\" fill=\"%s\"/></rect>\n",x,y,largura,altura,cor1,cor2);
+}
+
+void escreveSVGBlock (FILE *sig,Quadra *pquad)
+{
+    char *cor1,*cor2,*cep;
+    float altura,largura,x,y;
+    int tam1,tam2,tam3;
+    Quadra *quad=(Quadra *)pquad;
+
 }

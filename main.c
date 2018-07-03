@@ -7,10 +7,8 @@
 int main (int argc,char *argv[])
 {
     char *entrada,*diretorio;
-    entrada=malloc(sizeof(0));
-    diretorio=malloc(sizeof(0));
-    entrada=verificF(entrada,argc,argv);
-    diretorio=verificO(diretorio,argc,argv);
+    entrada=verificF(argc,argv);
+    diretorio=verificO(argc,argv);
     leArq(entrada,diretorio);
     return 0;
 }

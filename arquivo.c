@@ -64,7 +64,7 @@ FILE *copiaFile(FILE *sig,FILE *sig2,int cont)
     return (sig2);
 }
 
-FILE *tracaLinha(FILE *sig,char *ch,int cont)
+FILE *tracaLinha(FILE *sig,char *ch,unsigned long int cont)
 {
     char *token;
     char *cor;
@@ -128,27 +128,7 @@ FILE *tracaLinha(FILE *sig,char *ch,int cont)
 
 void iniciaSVG(FILE *sig)
 {
-    fprintf(sig,"<svg>");
-}
-
-void insereSVG (FILE *sig,int cont,fg *fgeo)
-{
-    int i;
-    Circulo *c;
-    Retangulo *r;
-    for (i=0;i<cont;i++)
-    {
-        c=GetCircId(fgeo,i);
-        if(c==NULL)
-        {
-        r=GetRectId(fgeo,i);
-        escreveSVGQuad(sig,r);
-        }
-        else
-        {
-            escreveSVGCirc(sig,c);
-        }
-    }
+    fprintf(sig,"<svg>\n");
 }
 
 void terminaSVG(FILE *sig)
@@ -161,43 +141,6 @@ void escreveLinha(FILE *sig,float x1,float y1,float x2,float y2,char *cor)
     fprintf(sig,"<line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" stroke:\"%s\" fill=\"%s\"/></line>\n",x1,y1,x2,y2,cor,cor);
 }
 
-void escreveSVGCirc (FILE *sig,Circulo *circ)
-{
-    char *cor1,*cor2;
-    float raio,x,y;
-    int tam1,tam2;
-    Circulo *c=(Circulo *) *circ;
-    tam1=devolveStrlencor1Circulo(c);
-    tam2=devolveStrlencor2Circulo(c);
-    cor1=malloc(sizeof(char)*(tam1+1));
-    cor2=malloc(sizeof(char)*(tam2+1));
-    strcpy(cor1,devolveCor1Circulo(c));
-    strcpy(cor2,devolveCor2Circulo(c));
-    raio=devolveRaio(c);
-    x=devolveXCirculo(c);
-    y=devolveYCirculo(c);
-    fprintf(sig,"<circle cx=\"%f\" cy=\"%f\" r=\"%f\"  stroke-width=\"3\" stroke=\"%s\" fill=\"%s\"/>\n",x,y,raio,cor1,cor2);
-}
-
-void escreveSVGQuad (FILE *sig,Retangulo *ret)
-{
-    char *cor1,*cor2;
-    float altura,largura,x,y;
-    int tam1,tam2;
-    Retangulo *r=(Retangulo *)ret;
-    tam1=devolveStrlencor1Retangulo(r);
-    tam2=devolveStrlencor2Retangulo(r);
-    cor1=malloc(sizeof(char)*(tam1+1));
-    cor2=malloc(sizeof(char)*(tam2+1));
-    strcpy(cor1,devolveCor1Retangulo(r));
-    strcpy(cor2,devolveCor2Retangulo(r));
-    altura=devolveAltura(r);
-    largura=devolveLargura(r);
-    x=devolveXRetangulo(r);
-    y=devolveYRetangulo(r);
-    fprintf(sig,"<rect x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\" stroke=\"%s\" fill=\"%s\"/></rect>\n",x,y,largura,altura,cor1,cor2);
-}
-
 void criaDio (char *dio,char *nomebase,int tamdio)
 {
     FILE *p;
@@ -205,7 +148,7 @@ void criaDio (char *dio,char *nomebase,int tamdio)
     int i;
     dio[tamdio+1]='\0';
     token=strtok(nomebase,".");
-    arqdio=malloc(sizeof(char)*(strlen(token)+5));
+    arqdio=(char *) malloc((strlen(token)+5)*sizeof(char));
     for (i=0;i<strlen(token);i++)
     {
         arqdio[i]=token[i];
@@ -222,11 +165,4 @@ void criaDio (char *dio,char *nomebase,int tamdio)
     p=fopen(arqdio,"w");
     fprintf(p,"%s",dio);
     fclose (p);
-    free(arqdio);
-    free(dio);
-}
-
-void finalArq ()
-{
-    exit (0);
 }

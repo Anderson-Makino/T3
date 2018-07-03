@@ -3,7 +3,7 @@
 
 typedef void* Circulo;
 
-Circulo createCirculo (int *ordem,int pi,char *pcor1,char *pcor2,float pr,float px,float py);
+Circulo createCirculo (unsigned long int ordem,int pi,char *pcor1,char *pcor2,float pr,float px,float py);
 
 int devolveStrlencor1Circulo(Circulo *pcirc);
 
@@ -15,7 +15,7 @@ char *devolveCor2Circulo(Circulo *pcirc);
 
 float devolveRaio(Circulo *pcirc);
 
-int devolveNOrdemCirculo(Circulo *pcirc);
+unsigned long int devolveNOrdemCirculo(Circulo *pcirc);
 
 int devolveIdCirculo(Circulo *pcirc);
 

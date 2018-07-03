@@ -5,18 +5,18 @@
 #include "retangulo.h"
 
 typedef struct retangulo{
-    int *ord;
+    unsigned long int *ord;
     int *i;
     float *x,*y;    /*coordenadas*/
     float *w,*h;      /*largura e altura do Retangulo*/
     char *cor1,*cor2;    /*cor da borda e do preenchimento*/
 }retangulo;
 
-Retangulo createRetangulo (int ordem,int pi,char *pcor1,char *pcor2,float pw,float ph,float px,float py)
+Retangulo createRetangulo (unsigned long int ordem,int pi,char *pcor1,char *pcor2,float pw,float ph,float px,float py)
 {
     retangulo *ret;
-    ret=malloc (sizeof(Retangulo));
-    ret->ord=malloc(sizeof(int));
+    ret=(retangulo *)malloc (sizeof(retangulo));
+    ret->ord=malloc(sizeof(unsigned long int));
     ret->i=malloc(sizeof(int));
     ret->x=malloc(sizeof(float));
     ret->y=malloc(sizeof(float));
@@ -47,11 +47,11 @@ int devolveStrlencor2Retangulo(Retangulo *pret)
 {
     retangulo *ret=(retangulo *)pret;
     int tam;
-    tam=strlen(ret->cor1);
+    tam=strlen(ret->cor2);
     return (tam);
 }
 
-int devolveNOrdemRetangulo(Retangulo *pret)
+unsigned long int devolveNOrdemRetangulo(Retangulo *pret)
 {
     retangulo *ret=(retangulo *)pret;
     return *(ret->ord);

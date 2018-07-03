@@ -35,4 +35,5 @@ void leArq(char *entrada,char *diretorio)
 	nomebase[j]='\0';
 	comandos(e,diretorio,nomebase);
 	fclose(e);
+	free (nomebase);
 }
