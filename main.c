@@ -6,9 +6,13 @@
 
 int main (int argc,char *argv[])
 {
-    char *entrada,*diretorio;
+    char *entrada,*diretorio,*qry;
+    entrada=malloc(sizeof(0));
+    diretorio==malloc(sizeof(0));
+    qry==malloc(sizeof(0));
     entrada=verificF(argc,argv);
     diretorio=verificO(argc,argv);
-    leArq(entrada,diretorio);
+    qry=verificQ(argc,argv);
+    leArq(entrada,diretorio,qry);
     return 0;
 }

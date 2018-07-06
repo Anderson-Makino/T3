@@ -20,6 +20,7 @@ char *verificF(int argc,char *argv[])
 		}
 	}
 	}
+	return 0;
 }
 
 char *verificO(int argc,char *argv[])
@@ -38,4 +39,24 @@ char *verificO(int argc,char *argv[])
 		}
 	}
 	}
+	return 0;
+}
+
+char *verificQ(int argc,char *argv[])
+{
+	char *qry;
+	int i;
+	for (i=1;i<argc;i++)
+	{
+	if (argv[i] [0]=='-')
+	{
+		if(argv[i] [1]=='q')
+		{
+			qry=(char *) malloc((strlen(argv[i+1])+2)*sizeof(char));
+			strcpy(qry,argv[i+1]);
+			return (qry);
+		}
+	}
+	}
+	return 0;
 }

@@ -7,23 +7,25 @@
 char *concatena(char *stringmain,char *stringconcatena,int *stringlen)
 {
     int i;
-    for(i=0;i<strlen(stringconcatena);i++)
+    int j=strlen(stringconcatena);
+    for(i=0;i<j;i++)
     {
         stringmain[*stringlen+i]=stringconcatena[i];
     }
-    *stringlen=*stringlen+strlen(stringconcatena);
+    *stringlen=*stringlen+j;
     return (stringmain);
 }
 
 char *concatena2(char *stringmain,char *stringconcatena,int *stringlen)
 {
     int i;
-    for(i=0;i<strlen(stringconcatena);i++)
+    int j=strlen(stringconcatena);
+    for(i=0;i<j;i++)
     {
         stringmain[*stringlen+i]=stringconcatena[i];
     }
     stringmain[*stringlen+i]='\n';
-    *stringlen=*stringlen+strlen(stringconcatena)+1;
+    *stringlen=*stringlen+j+1;
     return (stringmain);
 }
 
@@ -32,7 +34,7 @@ char *pegaCor1(char *ch)
     char *cor1;
     char *info;
     info=strtok(ch," ");
-    cor1=malloc(sizeof(char)*strlen(info));
+    cor1=(char *) malloc(sizeof(char)*strlen(info));
     strcpy(cor1,info);
     return cor1;
 }
@@ -43,7 +45,7 @@ char *pegaCor2(char *ch)
     char *info;
     info=strtok(ch," ");
     info=strtok(ch," ");
-    cor2=malloc(sizeof(char)*strlen(info));
+    cor2=(char *) malloc(sizeof(char)*strlen(info));
     strcpy(cor2,info);
     return cor2;
 }

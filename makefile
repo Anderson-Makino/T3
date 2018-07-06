@@ -1,5 +1,5 @@
-siguel: args.o arquivo.o circulo.o comandos.o funcoes.o formaGeo.o hidrante.o learq.o list.o quadra.o retangulo.o semaforo.o torre.o main.o
-	gcc args.o arquivo.o circulo.o comandos.o funcoes.o formaGeo.o hidrante.o learq.o list.o quadra.o retangulo.o semaforo.o torre.o main.o -o siguel -lm -fstack-protector-all   -std=c99 -g
+siguel: args.o arquivo.o circulo.o comandos.o comandosQry.o consultaQry.o funcoes.o formaGeo.o hidrante.o learq.o list.o quadra.o retangulo.o semaforo.o torre.o main.o
+	gcc args.o arquivo.o circulo.o comandos.o comandosQry.o consultaQry.o funcoes.o formaGeo.o hidrante.o learq.o list.o quadra.o retangulo.o semaforo.o torre.o main.o -o siguel -lm -fstack-protector-all   -std=c99 -g
 
 args.o: args.c args.h
 		gcc -c args.c -o args.o -lm  -fstack-protector-all   -std=c99 -g
@@ -13,6 +13,12 @@ circulo.o: circulo.c circulo.h
 comandos.o: comandos.c comandos.h
 	gcc -c comandos.c -o comandos.o -lm  -fstack-protector-all   -std=c99 -g
 
+comandosQry.o: comandosQry.c comandosQry.h
+	gcc -c comandosQry.c -o comandosQry.o -lm  -fstack-protector-all   -std=c99 -g
+
+consultaQry.o: consultaQry.c consultaQry.h
+	gcc -c consultaQry.c -o consultaQry.o -lm  -fstack-protector-all   -std=c99 -g
+	
 funcoes.o: funcoes.c funcoes.h
 	gcc -c funcoes.c -o funcoes.o -lm  -fstack-protector-all   -std=c99 -g
 

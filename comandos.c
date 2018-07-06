@@ -21,10 +21,10 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
     char espaco[2]=" ";
     char *linha,*ch;
     char *info;
-    char *nomearq;
     char *dio;
     char *svg;
     char c;
+    char *comandA;
     char *element1,*element2,*element3,*element4,*element5,*element6,*element7;
     char *cor1q,*cor2q,*cor1h,*cor2h,*cor1t,*cor2t,*cor1s,*cor2s;
     unsigned long int element0;
@@ -32,6 +32,7 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
     unsigned long int cont=0;
     int sizefile=0;
     int tamdio=0;
+    int idA;
     Posic *p;
     fg *fgeo;
     Circulo *circ;
@@ -46,7 +47,6 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
     dio=malloc(sizeof(0));
     svg=malloc(sizeof(0));
     linha=malloc(sizeof(char));
-    nomearq=(char *) malloc(sizeof(char));
     fgeo=createFG ();
 	while (1)
 	{
@@ -71,25 +71,25 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
         ch=strtok(NULL,"\n");
         nCirculo(&ndefault,ch);
     }
-    else if (ch[0]=='c' && ch[1]=='q')
+    else if (ch[0]=='c' && ch[1]=='q')  //pega cores de quadra
     {
         ch=strtok(NULL,"\n");
         cor1q=pegaCor1(ch);
         cor1q=pegaCor2(ch);
     }
-    else if (ch[0]=='c' && ch[1]=='h')
+    else if (ch[0]=='c' && ch[1]=='h')  //pega cores de hidrante
     {
         ch=strtok(NULL,"\n");
         cor1h=pegaCor1(ch);
         cor2h=pegaCor2(ch);
     }
-    else if (ch[0]=='c' && ch[1]=='t')
+    else if (ch[0]=='c' && ch[1]=='t')  //pega cores de torre
     {
         ch=strtok(NULL,"\n");
         cor1t=pegaCor1(ch);
         cor2t=pegaCor2(ch);
     }
-    else if (ch[0]=='c' && ch[1]=='s')
+    else if (ch[0]=='c' && ch[1]=='s')  //pega cores de semaforo
     {
         ch=strtok(NULL,"\n");
         cor1s=pegaCor1(ch);
@@ -194,6 +194,12 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
         tor=createTorre(element0,element1,atof(element2),atof(element3),cor1t,cor2t);
     }
 
+    else if(ch[0]=='q' && ch[1]=='?')
+    {
+        ch=strtok(NULL,"\n");
+        
+    }
+
     else if (ch[0]=='o')
     {
         ch=strtok(NULL,"\n");
@@ -215,9 +221,14 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
     else if (ch[0]=='a')
     {
         ch=strtok(NULL,"\n");
-        sig2=criaSuf (diretorio,nomebase,nomearq,sig2,ch);
+        info=strtok(ch," ");
+        idA=atoi(info);
+        info=strtok(NULL," ");
+        comandA=malloc(sizeof(char)*(strlen(info)+1));
+        strcpy(comandA,info);
+        sig2=criaSuf (diretorio,nomebase,sig2,comandA);
         insereSVG(sig2,cont,fgeo);
-        sig2=tracaLinha(sig2,ch,cont);
+        sig2=tracaLinha(sig2,idA,cont,fgeo);
         terminaSVG(sig2);
         fclose(sig2);
     }

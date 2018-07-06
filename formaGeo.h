@@ -32,6 +32,7 @@ Torre GetTorOrd(fg *fgeo,unsigned long int ord);
 char *sobreposicao (fg *fge,char *ch,char *dio,int *tamdio);
 char *pontointerno (fg *fge,char *ch,char *dio,int *tamdio);
 char *distancia (fg *fge,char *ch,char *dio,int *tamdio);
+FILE *tracaLinha(FILE *sig,int id,unsigned long int cont,fg *fgeo);  /*traça linha*/
 void insereSVG (FILE *sig,unsigned long int cont,fg *fgeo);  /*insere os elementos de svg*/
 void escreveSVGCirc (FILE *sig,Circulo *circ); /*escreve dados do circulo no arquivo*/
 void escreveSVGQuad (FILE *sig,Retangulo *ret); /*escreve dados do quadrado no arquivo*/

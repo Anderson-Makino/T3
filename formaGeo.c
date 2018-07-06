@@ -508,28 +508,32 @@ char *distancia (fg *fge,char *ch,char *dio,int *tamdio)
         if(c1==NULL)
         {
           ret1=GetRectId(fgeo,j);
+          if (ret1!=NULL)
+          {
           x1=devolveXRetangulo(ret1);
           y1=devolveYRetangulo(ret1);
+          }
         }
         else
         {
             x1=devolveXCirculo(c1);
             y1=devolveYCirculo(c1);
         }
-        printf("x1:%d  y1:%d\n",x1,y1);
-    c2=GetCircId(fgeo,j);
+    c2=GetCircId(fgeo,k);
         if(c2==NULL)
         {
-          ret2=GetRectId(fgeo,j);
+          ret2=GetRectId(fgeo,k);
+          if (ret2!=NULL)
+          {
           x2=devolveXRetangulo(ret2);
           y2=devolveYRetangulo(ret2);
+          }
         }
         else
         {
             x2=devolveXCirculo(c2);
             y2=devolveYCirculo(c2);
         }
-        printf("x2:%d  y2:%d\n",x2,y2);
     if ((c1==NULL && ret1==NULL) || (c2==NULL && ret2==NULL))
     {
         dio=concatena2 (dio," figura nao encontrada",tamdio);
@@ -538,14 +542,77 @@ char *distancia (fg *fge,char *ch,char *dio,int *tamdio)
     {
     a=x1-x2;
     b=y1-y2;
-    a=abs(a);
-    b=abs(b);
+    a=fabs(a);
+    b=fabs(b);
     result=pow(a,2)+pow(b,2);
     distance=sqrt(result);
     sprintf(distanciachar,"%.4f",distance);
     }
     dio=concatena2 (dio,distanciachar,tamdio);
     return (dio);
+}
+
+FILE *tracaLinha(FILE *sig,int id,unsigned long int cont,fg *fgeo)
+{
+    char *cor;
+    int tamcor;
+    int nforma;
+    float x1,y1,x2,y2;
+    int i;
+    Circulo *c1,*c2;
+    Retangulo *r1,*r2;
+    fg *f=(fg *)fgeo;
+    for(i=0;i<cont;i++)
+    {
+    c1=GetCircId (f,id);
+    if(c1==NULL)
+    {
+    r1=GetRectId (f,id);
+    }
+    if (c1!=NULL || r1!=NULL)
+    {
+        break;
+    }
+    }
+    if (c1==NULL && r1==NULL)
+    {
+        printf("forma geometrica nao encontrada\n");
+        return 0;
+    }
+    if (c1!=NULL)
+    {
+        x1=devolveXCirculo(c1);
+        y1=devolveYCirculo(c1);
+        tamcor=devolveStrlencor1Circulo(c1);
+        cor=malloc(sizeof(char)*(tamcor+1));
+        cor=devolveCor1Circulo(c1);
+    }
+    else
+    {
+        x1=devolveXRetangulo(r1);
+        y1=devolveYRetangulo(r1);
+        tamcor=devolveStrlencor1Retangulo(r1);
+        cor=malloc(sizeof(char)*(tamcor+1));
+        cor=devolveCor1Retangulo(r1);
+    }
+    for(i=0;i<cont;i++)
+    {
+    c2=GetCircOrd (f,i);
+    if(c2==NULL)
+    {
+        r2=GetRectOrd (f,i);
+        x2=devolveXRetangulo(r2);
+        y2=devolveYRetangulo(r2);
+    }
+    else
+    {
+        x2=devolveXCirculo(c2);
+        y2=devolveYCirculo(c2);
+    }
+    escreveLinha(sig,&x1,&y1,&x2,&y2,cor);
+    }
+    free(cor);
+    return(sig);
 }
 
 void insereSVG (FILE *sig,unsigned long int cont,fg *fgeo)
@@ -648,5 +715,73 @@ void escreveSVGBlock (FILE *sig,Quadra *pquad)
     float altura,largura,x,y;
     int tam1,tam2,tam3;
     Quadra *quad=(Quadra *)pquad;
+    tam1=devolveStrlencepQuadra(quad);
+    tam2=devolveStrlencor1Quadra(quad);
+    tam3=devolveStrlencor2Quadra(quad);
+    cep=malloc(sizeof(char)*(tam1+1));
+    cor1=malloc(sizeof(char)*(tam2+1));
+    cor2=malloc(sizeof(char)*(tam3+1));
+    strcpy(cep,devolveCepQuadra(quad));
+    strcpy(cor1,devolveCor1Quadra(quad));
+    strcpy(cor2,devolveCor2Quadra(quad));
+    altura=devolveAlturaQuadra(quad);
+    largura=devolveLarguraQuadra(quad);
+    x=devolveXQuadra(quad);
+    y=devolveYQuadra(quad);
+    fprintf(sig,"<rect x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\" stroke=\"%s\" fill=\"%s\"/></rect>\n",x,y,largura,altura,cor1,cor2);
+    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"%s\"/>%s</text>\n",x,y,cor1,cep);
+}
 
+void escreveSVGSemaphore (FILE *sig,Semaforo *psem)
+{
+    char *cor1,*cor2;
+    float x,y;
+    int tam1,tam2;
+    Semaforo *sem=(Semaforo *)psem;
+    tam1=devolveStrlencor1Semaforo(sem);
+    tam2=devolveStrlencor2Semaforo(sem);
+    cor1=malloc(sizeof(char)*(tam1+1));
+    cor2=malloc(sizeof(char)*(tam2+1));
+    strcpy(cor1,devolveCor1Semaforo(sem));
+    strcpy(cor2,devolveCor2Semaforo(sem));
+    x=devolveXSemaforo(sem);
+    y=devolveYSemaforo(sem);
+    fprintf(sig,"<circle cx=\"%f\" cy=\"%f\" r=\"10\"  stroke-width=\"3\" stroke=\"%s\" fill=\"%s\"/>\n",x,y,cor1,cor2);
+    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"black\"/>S</text>\n",x,y);
+}
+
+void escreveSVGHydrant (FILE *sig,Hidrante *phid)
+{
+    char *cor1,*cor2;
+    float x,y;
+    int tam1,tam2;
+    Hidrante *hid=(Hidrante *)phid;
+    tam1=devolveStrlencor1Hidrante(hid);
+    tam2=devolveStrlencor2Hidrante(hid);
+    cor1=malloc(sizeof(char)*(tam1+1));
+    cor2=malloc(sizeof(char)*(tam2+1));
+    strcpy(cor1,devolveCor1Hidrante(hid));
+    strcpy(cor2,devolveCor2Hidrante(hid));
+    x=devolveXHidrante(hid);
+    y=devolveYHidrante(hid);
+    fprintf(sig,"<circle cx=\"%f\" cy=\"%f\" r=\"10\"  stroke-width=\"3\" stroke=\"%s\" fill=\"%s\"/>\n",x,y,cor1,cor2);
+    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"black\"/>H</text>\n",x,y);
+}
+
+void escreveSVGTower (FILE *sig,Torre *ptor)
+{
+    char *cor1,*cor2;
+    float x,y;
+    int tam1,tam2;
+    Torre *tor=(Torre *)ptor;
+    tam1=devolveStrlencor1Torre(tor);
+    tam2=devolveStrlencor2Torre(tor);
+    cor1=malloc(sizeof(char)*(tam1+1));
+    cor2=malloc(sizeof(char)*(tam2+1));
+    strcpy(cor1,devolveCor1Torre(tor));
+    strcpy(cor2,devolveCor2Torre(tor));
+    x=devolveXTorre(tor);
+    y=devolveYTorre(tor);
+    fprintf(sig,"<circle cx=\"%f\" cy=\"%f\" r=\"10\"  stroke-width=\"3\" stroke=\"%s\" fill=\"%s\"/>\n",x,y,cor1,cor2);
+    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"black\"/>T</text>\n",x,y);
 }

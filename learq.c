@@ -4,8 +4,9 @@
 
 #include "learq.h"
 #include "comandos.h"
+#include "comandosQry.h"
 
-void leArq(char *entrada,char *diretorio)
+void leArq(char *entrada,char *diretorio,char *qry)
 {
 	FILE *e;
 	char *nomebase;
@@ -35,5 +36,6 @@ void leArq(char *entrada,char *diretorio)
 	nomebase[j]='\0';
 	comandos(e,diretorio,nomebase);
 	fclose(e);
+	executarQry(token,qry);
 	free (nomebase);
 }
