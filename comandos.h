@@ -5,6 +5,6 @@
 #include "circulo.h"
 #include "formaGeo.h"
 
-void comandos(FILE *e,char *diretorio,char *nomebase);  /*realiza os comandos*/
+int comandos(FILE *e,char *diretorio,char *nomebase,char *token,char *qry);  /*realiza os comandos*/
 
 #endif

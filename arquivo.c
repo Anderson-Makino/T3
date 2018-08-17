@@ -55,7 +55,7 @@ FILE *criaSuf (char *diretorio,char *nomebase,FILE *sig2,char *ch)
 
 void iniciaSVG(FILE *sig)
 {
-    fprintf(sig,"<svg>\n");
+    fprintf(sig,"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"10000\" height=\"10000\">\n");
 }
 
 void terminaSVG(FILE *sig)

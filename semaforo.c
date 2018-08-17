@@ -37,10 +37,10 @@ unsigned long int devolveNOrdemSemaforo(Semaforo *psem)
     return *(sem->ord);
 
 }
-int devolveIdSemaforo(Semaforo *psem)
+char *devolveIdSemaforo(Semaforo *psem)
 {
     semaforo *sem=(semaforo *)psem;
-    return *(sem->id);
+    return (sem->id);
 }
 
 float devolveXSemaforo(Semaforo *psem)
@@ -81,4 +81,13 @@ char *devolveCor2Semaforo(Semaforo *psem)
 {
     semaforo *sem = (semaforo *)psem;
     return (sem->cor2);
+}
+
+void mudaCorSemaforo(Semaforo *psem,char *pcor1,char *pcor2)
+{
+    semaforo *sem = (semaforo *)psem;
+    sem->cor1=malloc(sizeof(char)*strlen(pcor1)+1);
+    sem->cor2=malloc(sizeof(char)*strlen(pcor2)+1);
+    strcpy(sem->cor1,pcor1);
+    strcpy(sem->cor2,pcor2);
 }

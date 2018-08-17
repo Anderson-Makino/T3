@@ -21,7 +21,7 @@ Quadra createQuadra (unsigned long int ordem,char *pcep,float px,float py,float 
     quad->y=malloc(sizeof(float));
     quad->w=malloc(sizeof(float));
     quad->h=malloc(sizeof(float));
-    quad->cep=malloc ((strlen(pcep)+1)*(sizeof(char)+1));
+    quad->cep=malloc ((strlen(pcep)+1)*(sizeof(char)));
     quad->cor1=malloc(sizeof(char)*(strlen(pcor1)+1));
     quad->cor2=malloc(sizeof(char)*(strlen(pcor2)+1));
     *(quad->ord)=ordem;
@@ -43,10 +43,10 @@ int devolveStrlencepQuadra(Quadra *pquad)
     return (tam);
 }
 
-char devolveCepQuadra(Quadra *pquad)
+char *devolveCepQuadra(Quadra *pquad)
 {
     quadra *quad=(quadra *)pquad;
-    return *(quad->cep);
+    return (quad->cep);
 }
 
 unsigned long int devolveNOrdemQuadra(Quadra *pquad)
@@ -105,4 +105,13 @@ char *devolveCor2Quadra(Quadra *pquad)
 {
     quadra *quad = (quadra *)pquad;
     return (quad->cor2);
+}
+
+void mudaCorQuadra(Quadra *pquad,char *pcor1,char *pcor2)
+{
+    quadra *quad = (quadra *)pquad;
+    quad->cor1=malloc(sizeof(char)*strlen(pcor1)+1);
+    quad->cor2=malloc(sizeof(char)*strlen(pcor2)+1);
+    strcpy(quad->cor1,pcor1);
+    strcpy(quad->cor2,pcor2);
 }

@@ -1,6 +1,8 @@
 #ifndef COMANDOSQRY_H
 #define COMANDOSQRY_H
 
-void executarQry(char *token,char *qry);
+typedef void* fg;
+
+void executarQry(char *token,char *qry,char *nomebase,unsigned long int cont,fg *fgeo,int ntor);
 
 #endif

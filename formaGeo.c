@@ -121,17 +121,34 @@ Retangulo GetRectId(fg *fgeo,int id)
   return NULL;
 }
 
-Hidrante GetHydId(fg *fgeo,char id)
+Quadra *GetBlockId(fg *fgeo,char *id)
+{
+  formasGeometricas *f=(formasGeometricas *)fgeo;
+  Posic *p;
+  Quadra *quad;
+  p=getFirst(f->Block);
+  while(p!=NULL)
+  {
+    quad=get(f->Block, p);
+    if(strcmp(devolveCepQuadra(quad),id)==0)
+    {
+      return quad;
+    }
+    p=getNext(f->Block,p);
+  }
+  return NULL;
+}
+
+Hidrante *GetHydId(fg *fgeo,char *id)
 {
   formasGeometricas *f=(formasGeometricas *)fgeo;
   Posic *p;
   Hidrante *hid;
-
   p=getFirst(f->Hydrant);
   while(p!=NULL)
   {
     hid=get(f->Hydrant, p);
-    if(devolveIdHidrante(hid)==id)
+    if(strcmp(devolveIdHidrante(hid),id)==0)
     {
       return hid;
     }
@@ -140,7 +157,7 @@ Hidrante GetHydId(fg *fgeo,char id)
   return NULL;
 }
 
-Semaforo GetSemId(fg *fgeo,char id)
+Semaforo *GetSemId(fg *fgeo,char *id)
 {
   formasGeometricas *f=(formasGeometricas *)fgeo;
   Posic *p;
@@ -150,7 +167,7 @@ Semaforo GetSemId(fg *fgeo,char id)
   while(p!=NULL)
   {
     sem=get(f->Semaphore, p);
-    if(devolveIdSemaforo(sem)==id)
+    if(strcmp(devolveIdSemaforo(sem),id)==0)
     {
       return sem;
     }
@@ -159,7 +176,7 @@ Semaforo GetSemId(fg *fgeo,char id)
   return NULL;
 }
 
-Torre GetTorId(fg *fgeo,char id)
+Torre *GetTorId(fg *fgeo,char *id)
 {
   formasGeometricas *f=(formasGeometricas *)fgeo;
   Posic *p;
@@ -169,7 +186,7 @@ Torre GetTorId(fg *fgeo,char id)
   while(p!=NULL)
   {
     tor=get(f->Tower, p);
-    if(devolveIdTorre(tor)==id)
+    if(strcmp(devolveIdTorre(tor),id)==0)
     {
       return tor;
     }
@@ -277,7 +294,6 @@ Torre GetTorOrd(fg *fgeo, unsigned long int ord)
   formasGeometricas *f=(formasGeometricas *)fgeo;
   Posic *p;
   Torre *tor;
-
   p=getFirst(f->Tower);
   while(p!=NULL)
   {
@@ -380,7 +396,7 @@ char *sobreposicao (fg *fge,char *ch,char *dio,int *tamdio)
       largurak=devolveLargura(r2);
       xk=devolveXRetangulo(r2);
       yk=devolveYRetangulo(r2);
-        if(xj+raioj>=xk && yj+raioj>=yk)
+        if((xj+raioj>=xk && yj+raioj>=yk) || (xj-raioj<=xk+largurak && yj-raioj<=yk+alturak))  /*circulo com retangulo*/
         {
             resultado="sim";
         }
@@ -398,7 +414,7 @@ char *sobreposicao (fg *fge,char *ch,char *dio,int *tamdio)
       raiok=devolveRaio(c2);
       xk=devolveXCirculo(c2);
       yk=devolveYCirculo(c2);
-        if(xk+raiok>=xj && yk+raiok>=yj)
+        if((xk+raiok>=xj && yk+raiok>=yj) || (xk-raiok<=xj+larguraj && yk-raiok<=yj+alturaj))
         {
             resultado="sim";
         }
@@ -643,21 +659,24 @@ void insereSVG (FILE *sig,unsigned long int cont,fg *fgeo)
                 if (sem==NULL)
                 {
                   tor=GetTorOrd(f,i);
-                  //escreveSVGTower (sig,tor);
+                  if(tor!=NULL)
+                  {
+                  escreveSVGTower (sig,tor);
+                  }
                 }
                 else 
                 {
-                  //escreveSVGSemaphore (sig,sem);
+                  escreveSVGSemaphore (sig,sem);
                 }
               }
               else
               {
-                //escreveSVGHydrant(sig,hid);
+                escreveSVGHydrant(sig,hid);
               }
             }
             else
             {
-              //escreveSVGBlock(sig,quad);
+              escreveSVGBlock(sig,quad);
             }
           }
             else 
@@ -682,8 +701,8 @@ void escreveSVGCirc (FILE *sig,Circulo *circ)
     tam2=devolveStrlencor2Circulo(c);
     cor1=malloc(sizeof(char)*(tam1+1));
     cor2=malloc(sizeof(char)*(tam2+1));
-    strcpy(cor1,devolveCor1Circulo(c));
-    strcpy(cor2,devolveCor2Circulo(c));
+    cor1=devolveCor1Circulo(c);
+    cor2=devolveCor2Circulo(c);
     raio=devolveRaio(c);
     x=devolveXCirculo(c);
     y=devolveYCirculo(c);
@@ -700,8 +719,8 @@ void escreveSVGQuad (FILE *sig,Retangulo *ret)
     tam2=devolveStrlencor2Retangulo(r);
     cor1=malloc(sizeof(char)*(tam1+1));
     cor2=malloc(sizeof(char)*(tam2+1));
-    strcpy(cor1,devolveCor1Retangulo(r));
-    strcpy(cor2,devolveCor2Retangulo(r));
+    cor1=devolveCor1Retangulo(r);
+    cor2=devolveCor2Retangulo(r);
     altura=devolveAltura(r);
     largura=devolveLargura(r);
     x=devolveXRetangulo(r);
@@ -721,15 +740,18 @@ void escreveSVGBlock (FILE *sig,Quadra *pquad)
     cep=malloc(sizeof(char)*(tam1+1));
     cor1=malloc(sizeof(char)*(tam2+1));
     cor2=malloc(sizeof(char)*(tam3+1));
-    strcpy(cep,devolveCepQuadra(quad));
-    strcpy(cor1,devolveCor1Quadra(quad));
-    strcpy(cor2,devolveCor2Quadra(quad));
+    cep=devolveCepQuadra(quad);
+    cor1=devolveCor1Quadra(quad);
+    cor2=devolveCor2Quadra(quad);
     altura=devolveAlturaQuadra(quad);
     largura=devolveLarguraQuadra(quad);
     x=devolveXQuadra(quad);
     y=devolveYQuadra(quad);
     fprintf(sig,"<rect x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\" stroke=\"%s\" fill=\"%s\"/></rect>\n",x,y,largura,altura,cor1,cor2);
-    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"%s\"/>%s</text>\n",x,y,cor1,cep);
+    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"%s\">%s</text>\n",x+1,y+10,cor1,cep);
+    free(cep);
+    free(cor1);
+    free(cor2);
 }
 
 void escreveSVGSemaphore (FILE *sig,Semaforo *psem)
@@ -742,12 +764,12 @@ void escreveSVGSemaphore (FILE *sig,Semaforo *psem)
     tam2=devolveStrlencor2Semaforo(sem);
     cor1=malloc(sizeof(char)*(tam1+1));
     cor2=malloc(sizeof(char)*(tam2+1));
-    strcpy(cor1,devolveCor1Semaforo(sem));
-    strcpy(cor2,devolveCor2Semaforo(sem));
+    cor1=devolveCor1Semaforo(sem);
+    cor2=devolveCor2Semaforo(sem);
     x=devolveXSemaforo(sem);
     y=devolveYSemaforo(sem);
     fprintf(sig,"<circle cx=\"%f\" cy=\"%f\" r=\"10\"  stroke-width=\"3\" stroke=\"%s\" fill=\"%s\"/>\n",x,y,cor1,cor2);
-    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"black\"/>S</text>\n",x,y);
+    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"black\">S</text>\n",x-3,y+5);
 }
 
 void escreveSVGHydrant (FILE *sig,Hidrante *phid)
@@ -760,12 +782,12 @@ void escreveSVGHydrant (FILE *sig,Hidrante *phid)
     tam2=devolveStrlencor2Hidrante(hid);
     cor1=malloc(sizeof(char)*(tam1+1));
     cor2=malloc(sizeof(char)*(tam2+1));
-    strcpy(cor1,devolveCor1Hidrante(hid));
-    strcpy(cor2,devolveCor2Hidrante(hid));
+    cor1=devolveCor1Hidrante(hid);
+    cor2=devolveCor2Hidrante(hid);
     x=devolveXHidrante(hid);
     y=devolveYHidrante(hid);
     fprintf(sig,"<circle cx=\"%f\" cy=\"%f\" r=\"10\"  stroke-width=\"3\" stroke=\"%s\" fill=\"%s\"/>\n",x,y,cor1,cor2);
-    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"black\"/>H</text>\n",x,y);
+    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"black\">H</text>\n",x-3,y+5);
 }
 
 void escreveSVGTower (FILE *sig,Torre *ptor)
@@ -778,10 +800,10 @@ void escreveSVGTower (FILE *sig,Torre *ptor)
     tam2=devolveStrlencor2Torre(tor);
     cor1=malloc(sizeof(char)*(tam1+1));
     cor2=malloc(sizeof(char)*(tam2+1));
-    strcpy(cor1,devolveCor1Torre(tor));
-    strcpy(cor2,devolveCor2Torre(tor));
+    cor1=devolveCor1Torre(tor);
+    cor2=devolveCor2Torre(tor);
     x=devolveXTorre(tor);
     y=devolveYTorre(tor);
     fprintf(sig,"<circle cx=\"%f\" cy=\"%f\" r=\"10\"  stroke-width=\"3\" stroke=\"%s\" fill=\"%s\"/>\n",x,y,cor1,cor2);
-    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"black\"/>T</text>\n",x,y);
+    fprintf(sig,"<text x=\"%f\" y=\"%f\" fill=\"black\">T</text>\n",x-3,y+5);
 }

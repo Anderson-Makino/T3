@@ -7,7 +7,7 @@ Torre createTorre (unsigned long int ordem,char *pid,float px,float py,char *cor
 
 unsigned long int devolveNOrdemTorre(Torre *ptor);
 
-int devolveIdTorre(Torre *ptor);
+char *devolveIdTorre(Torre *ptor);
 
 float devolveXTorre(Torre *ptor);
 
@@ -20,5 +20,7 @@ int devolveStrlencor2Torre(Torre *ptor);
 char *devolveCor1Torre(Torre *ptor);
 
 char *devolveCor2Torre(Torre *ptor);
+
+void mudaCorTorre(Torre *ptor,char *pcor1,char *pcor2);
 
 #endif

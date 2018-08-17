@@ -29,23 +29,10 @@ char *concatena2(char *stringmain,char *stringconcatena,int *stringlen)
     return (stringmain);
 }
 
-char *pegaCor1(char *ch)
+char *pegaCor(char *ch,char *info)
 {
-    char *cor1;
-    char *info;
-    info=strtok(ch," ");
-    cor1=(char *) malloc(sizeof(char)*strlen(info));
-    strcpy(cor1,info);
-    return cor1;
-}
-
-char *pegaCor2(char *ch)
-{
-    char *cor2;
-    char *info;
-    info=strtok(ch," ");
-    info=strtok(ch," ");
-    cor2=(char *) malloc(sizeof(char)*strlen(info));
-    strcpy(cor2,info);
-    return cor2;
+    char *cor;
+    cor=(char *) malloc(sizeof(char)*strlen(info));
+    strcpy(cor,info);
+    return cor;
 }

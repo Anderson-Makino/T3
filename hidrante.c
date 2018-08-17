@@ -37,10 +37,10 @@ unsigned long int devolveNOrdemHidrante(Hidrante *phid)
     return *(hid->ord);
 
 }
-int devolveIdHidrante(Hidrante *phid)
+char *devolveIdHidrante(Hidrante *phid)
 {
     hidrante *hid=(hidrante *)phid;
-    return *(hid->id);
+    return (hid->id);
 }
 
 float devolveXHidrante(Hidrante *phid)
@@ -81,4 +81,13 @@ char *devolveCor2Hidrante(Hidrante *phid)
 {
     hidrante *hid = (hidrante *)phid;
     return (hid->cor2);
+}
+
+void mudaCorHidrante(Hidrante *phid,char *pcor1,char *pcor2)
+{
+    hidrante *hid = (hidrante *)phid;
+    hid->cor1=malloc(sizeof(char)*strlen(pcor1)+1);
+    hid->cor2=malloc(sizeof(char)*strlen(pcor2)+1);
+    strcpy(hid->cor1,pcor1);
+    strcpy(hid->cor2,pcor2);
 }

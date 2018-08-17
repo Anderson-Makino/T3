@@ -14,7 +14,7 @@
 #include "formaGeo.h"
 #include "funcoes.h"
 
-void comandos(FILE *e,char *diretorio,char *nomebase)
+int comandos(FILE *e,char *diretorio,char *nomebase,char *token,char *qry)
 {
     FILE *sig;
     FILE *sig2;
@@ -29,10 +29,11 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
     char *cor1q,*cor2q,*cor1h,*cor2h,*cor1t,*cor2t,*cor1s,*cor2s;
     unsigned long int element0;
     int ndefault=1000;
-    unsigned long int cont=0;
+    unsigned long int cont=0,contnx=0;
     int sizefile=0;
     int tamdio=0;
     int idA;
+    int ntor=0;
     Posic *p;
     fg *fgeo;
     Circulo *circ;
@@ -41,8 +42,6 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
     Hidrante *hid;
     Semaforo *sem;
     Torre *tor;
-    circ=malloc(sizeof(0));
-    ret=malloc(sizeof(0));
     sig=fopen(nomebase,"w");
     dio=malloc(sizeof(0));
     svg=malloc(sizeof(0));
@@ -50,7 +49,7 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
     fgeo=createFG ();
 	while (1)
 	{
-        if (cont>ndefault)
+        if (contnx>ndefault)
         {
             printf("numero de formas geometricas excedido\n");
             exit (0);
@@ -74,26 +73,34 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
     else if (ch[0]=='c' && ch[1]=='q')  //pega cores de quadra
     {
         ch=strtok(NULL,"\n");
-        cor1q=pegaCor1(ch);
-        cor1q=pegaCor2(ch);
+        info=strtok(ch," ");
+        cor1q=pegaCor(ch,info);
+        info=strtok(NULL," ");
+        cor2q=pegaCor(ch,info);
     }
     else if (ch[0]=='c' && ch[1]=='h')  //pega cores de hidrante
     {
         ch=strtok(NULL,"\n");
-        cor1h=pegaCor1(ch);
-        cor2h=pegaCor2(ch);
+        info=strtok(ch," ");
+        cor1h=pegaCor(ch,info);
+        info=strtok(NULL," ");
+        cor2h=pegaCor(ch,info);
     }
     else if (ch[0]=='c' && ch[1]=='t')  //pega cores de torre
     {
         ch=strtok(NULL,"\n");
-        cor1t=pegaCor1(ch);
-        cor2t=pegaCor2(ch);
+        info=strtok(ch," ");
+        cor1t=pegaCor(ch,info);
+        info=strtok(NULL," ");
+        cor2t=pegaCor(ch,info);
     }
     else if (ch[0]=='c' && ch[1]=='s')  //pega cores de semaforo
     {
         ch=strtok(NULL,"\n");
-        cor1s=pegaCor1(ch);
-        cor2s=pegaCor2(ch);
+        info=strtok(ch," ");
+        cor1s=pegaCor(ch,info);
+        info=strtok(NULL," ");
+        cor2s=pegaCor(ch,info);
     }
     else if (ch[0]=='c')     //insere um circulo
     {
@@ -114,6 +121,7 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
         circ=createCirculo (element0,atoi(element1),element2,element3,atof(element4),atof(element5),atof(element6));
         addCircle (fgeo,circ);
         cont++;
+        contnx++;
     }
     
     else if (ch[0]=='r')     //insere um retangulo
@@ -137,6 +145,7 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
         ret=createRetangulo(element0,atoi(element1),element2,element3,atof(element4),atof(element5),atof(element6),atof(element7));
         addRet(fgeo,ret);
         cont++;
+        contnx++;
     }
     else if(ch[0]=='q')     //insere quadra
     {
@@ -153,6 +162,8 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
         info=strtok(NULL," ");
         element5=info;
         quad=createQuadra(element0,element1,atof(element2),atof(element3),atof(element4),atof(element5),cor1q,cor2q);
+        addBlock(fgeo,quad);
+        cont++;
     }
 
     else if(ch[0]=='h')     //insere hidrante
@@ -166,6 +177,8 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
         info=strtok(NULL," ");
         element3=info;
         hid=createHidrante(element0,element1,atof(element2),atof(element3),cor1h,cor2h);
+        addHydrant(fgeo,hid);
+        cont++;
     }
 
     else if(ch[0]=='s')     //insere semaforo
@@ -179,6 +192,8 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
         info=strtok(NULL," ");
         element3=info;
         sem=createSemaforo(element0,element1,atof(element2),atof(element3),cor1s,cor2s);
+        addSemaphore(fgeo,sem);
+        cont++;
     }
 
     else if(ch[0]=='t')     //insere torre de celular
@@ -192,6 +207,9 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
         info=strtok(NULL," ");
         element3=info;
         tor=createTorre(element0,element1,atof(element2),atof(element3),cor1t,cor2t);
+        addTower(fgeo,tor);
+        cont++;
+        ntor++;
     }
 
     else if(ch[0]=='q' && ch[1]=='?')
@@ -242,9 +260,15 @@ void comandos(FILE *e,char *diretorio,char *nomebase)
         free (linha);
         free (dio);
         free (svg);
-        free (circ);
-        free (ret);
-        break;
+        fclose(e);
+        if (qry!=NULL)
+        {
+	    executarQry(token,qry,nomebase,cont,fgeo,ntor);
+        }
+        else 
+        {
+           return 0;
+        }
     }
     }
 }

@@ -36,10 +36,10 @@ unsigned long int devolveNOrdemTorre(Torre *ptor)
     return *(tor->ord);
 
 }
-int devolveIdTorre(Torre *ptor)
+char *devolveIdTorre(Torre *ptor)
 {
     torre *tor=(torre *)ptor;
-    return *(tor->id);
+    return (tor->id);
 }
 
 float devolveXTorre(Torre *ptor)
@@ -80,4 +80,13 @@ char *devolveCor2Torre(Torre *ptor)
 {
     torre *tor = (torre *)ptor;
     return (tor->cor2);
+}
+
+void mudaCorTorre(Torre *ptor,char *pcor1,char *pcor2)
+{
+    torre *tor = (torre *)ptor;
+    tor->cor1=malloc(sizeof(char)*strlen(pcor1)+1);
+    tor->cor2=malloc(sizeof(char)*strlen(pcor2)+1);
+    strcpy(tor->cor1,pcor1);
+    strcpy(tor->cor2,pcor2);
 }

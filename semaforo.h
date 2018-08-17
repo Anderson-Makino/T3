@@ -7,7 +7,7 @@ Semaforo createSemaforo (unsigned long int ordem,char *id,float px,float py,char
 
 unsigned long int devolveNOrdemSemaforo(Semaforo *psem);
 
-int devolveIdSemaforo(Semaforo *psem);
+char *devolveIdSemaforo(Semaforo *psem);
 
 float devolveXSemaforo(Semaforo *psem);
 
@@ -20,5 +20,7 @@ int devolveStrlencor2Semaforo(Semaforo *psem);
 char *devolveCor1Semaforo(Semaforo *psem);
 
 char *devolveCor2Semaforo(Semaforo *psem);
+
+void mudaCorSemaforo(Semaforo *phid,char *pcor1,char *pcor2);
 
 #endif

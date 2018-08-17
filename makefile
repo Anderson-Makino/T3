@@ -1,5 +1,5 @@
-siguel: args.o arquivo.o circulo.o comandos.o comandosQry.o consultaQry.o funcoes.o formaGeo.o hidrante.o learq.o list.o quadra.o retangulo.o semaforo.o torre.o main.o
-	gcc args.o arquivo.o circulo.o comandos.o comandosQry.o consultaQry.o funcoes.o formaGeo.o hidrante.o learq.o list.o quadra.o retangulo.o semaforo.o torre.o main.o -o siguel -lm -fstack-protector-all   -std=c99 -g
+siguel: args.o arquivo.o circulo.o comandos.o comandosQry.o consultaQry.o funcoes.o formaGeo.o hidrante.o learq.o list.o closestPair.o quadra.o retangulo.o semaforo.o torre.o main.o
+	gcc args.o arquivo.o circulo.o comandos.o comandosQry.o consultaQry.o funcoes.o formaGeo.o hidrante.o learq.o list.o closestPair.o quadra.o retangulo.o semaforo.o torre.o main.o -o siguel -lm -fstack-protector-all   -std=c99 -g
 
 args.o: args.c args.h
 		gcc -c args.c -o args.o -lm  -fstack-protector-all   -std=c99 -g
@@ -9,6 +9,9 @@ arquivo.o: arquivo.c arquivo.h
 	
 circulo.o: circulo.c circulo.h
 		gcc -c circulo.c -o  circulo.o -lm  -fstack-protector-all   -std=c99 -g
+
+closestPair.o: closestPair.c closestPair.h
+	gcc -c closestPair.c -o closestPair.o -lm -fstack-protector-all   -std=c99 -g
 		
 comandos.o: comandos.c comandos.h
 	gcc -c comandos.c -o comandos.o -lm  -fstack-protector-all   -std=c99 -g

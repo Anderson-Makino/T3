@@ -7,7 +7,7 @@ Hidrante createHidrante (unsigned long int ordem,char *pid,float px,float py,cha
 
 unsigned long int devolveNOrdemHidrante(Hidrante *phid);
 
-int devolveIdHidrante(Hidrante *phid);
+char *devolveIdHidrante(Hidrante *phid);
 
 float devolveXHidrante(Hidrante *phid);
 
@@ -20,5 +20,7 @@ int devolveStrlencor2Hidrante(Hidrante *phid);
 char *devolveCor1Hidrante(Hidrante *phid);
 
 char *devolveCor2Hidrante(Hidrante *phid);
+
+void mudaCorHidrante(Hidrante *phid,char *pcor1,char *pcor2);
 
 #endif

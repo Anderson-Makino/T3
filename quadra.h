@@ -7,7 +7,7 @@ Quadra createQuadra (unsigned long int ordem,char *pcep,float px,float py,float 
 
 int devolveStrlencepQuadra(Quadra *pquad);
 
-char devolveCepQuadra(Quadra *pquad);
+char *devolveCepQuadra(Quadra *pquad);
 
 unsigned long int devolveNOrdemQuadra(Quadra *pquad);
 
@@ -26,5 +26,7 @@ int devolveStrlencor2Quadra(Quadra *pquad);
 char *devolveCor1Quadra(Quadra *pquad);
 
 char *devolveCor2Quadra(Quadra *pquad);
+
+void mudaCorQuadra(Quadra *pquad,char *pcor1,char *pcor2);
 
 #endif

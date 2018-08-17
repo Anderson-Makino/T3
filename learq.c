@@ -12,10 +12,11 @@ void leArq(char *entrada,char *diretorio,char *qry)
 	char *nomebase;
 	char *token;
 	int i,j=0;
+	unsigned long int cont;
 	e=fopen (entrada,"r");
 	if (e==NULL)
 	{
-	printf("erro ao abrir o arquivo");
+	printf("erro ao abrir o arquivo\n");
 	exit (0);
 	}
 	token=strtok(entrada,".");
@@ -34,8 +35,6 @@ void leArq(char *entrada,char *diretorio,char *qry)
 	nomebase[j]='g';
 	j++;
 	nomebase[j]='\0';
-	comandos(e,diretorio,nomebase);
-	fclose(e);
-	executarQry(token,qry);
+	comandos(e,diretorio,nomebase,token,qry);
 	free (nomebase);
 }
