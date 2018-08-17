@@ -24,6 +24,7 @@ void reportaRetQry(float x,float y,float larg,float alt,unsigned long int cont,F
     unsigned long int i;
     float x2,y2;
     float raio,altura,largura;
+    printf("!1!\n");
     for (i=0;i<cont;i++)
     {
         circ=GetCircOrd(fgeo,i);
@@ -51,8 +52,8 @@ void reportaRetQry(float x,float y,float larg,float alt,unsigned long int cont,F
                             {
                                 fprintf(report,"Torre x:%f  y:%f\n",x2,y2);
                                 nequips[*contequips]=i;
-                                *contequips++;
-                                nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                                *(contequips)=*(contequips)+1;
+                                nequips=realloc(nequips,sizeof(unsigned long int)* (*(contequips)+1));
 
                             }
                             }
@@ -66,8 +67,8 @@ void reportaRetQry(float x,float y,float larg,float alt,unsigned long int cont,F
                             {
                                 fprintf(report,"Semaforo x:%f  y:%f\n",x2,y2);
                                 nequips[*contequips]=i;
-                                *contequips++;
-                                nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                                *(contequips)=*(contequips)+1;
+                                nequips=realloc(nequips,sizeof(unsigned long int)* (*(contequips)+1));
 
                             }
                         }
@@ -81,8 +82,8 @@ void reportaRetQry(float x,float y,float larg,float alt,unsigned long int cont,F
                         {
                             fprintf(report,"Hidrante x:%f  y:%f\n",x2,y2);
                             nequips[*contequips]=i;
-                            *contequips++;
-                            nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                            *(contequips)=*(contequips)+1;
+                            nequips=realloc(nequips,sizeof(unsigned long int)* (*(contequips)+1));
 
                         }
                     }
@@ -97,8 +98,8 @@ void reportaRetQry(float x,float y,float larg,float alt,unsigned long int cont,F
                     {
                         fprintf(report,"Quadra x:%f  y:%f\n",x2,y2);
                         nequips[*contequips]=i;
-                        *contequips++;
-                        nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                        *(contequips)=*(contequips)+1;
+                        nequips=realloc(nequips,sizeof(unsigned long int)* (*(contequips)+1));
 
                     }
                 }
@@ -113,8 +114,8 @@ void reportaRetQry(float x,float y,float larg,float alt,unsigned long int cont,F
                 {
                     fprintf(report,"Retangulo x:%f  y:%f\n",x2,y2);
                     nequips[*contequips]=i;
-                    *contequips++;
-                    nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                    *(contequips)=*(contequips)+1;
+                    nequips=realloc(nequips,sizeof(unsigned long int)* (*(contequips)+1));
 
                 }
             }
@@ -128,12 +129,19 @@ void reportaRetQry(float x,float y,float larg,float alt,unsigned long int cont,F
             {
                 fprintf(report,"Circulo x:%f  y:%f\n",x2,y2);
                 nequips[*contequips]=i;
-                *contequips++;
-                nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                *(contequips)=*(contequips)+1;
+                nequips=realloc(nequips,sizeof(unsigned long int)* (*(contequips)+1));
 
             }
         }
     }
+    printf("!!!\n");
+    free(circ);
+    free(ret);
+    free(quad);
+    free(hid);
+    free(tor);
+    free(sem);
 }
 
 void reportaCircQry(float r,float x,float y,unsigned long int cont,FILE *report,unsigned long int *nequips,unsigned long int *contequips,fg *fgeo)
@@ -173,7 +181,7 @@ void reportaCircQry(float r,float x,float y,unsigned long int cont,FILE *report,
                                 fprintf(report,"Torre x:%f  y:%f\n",x2,y2);
                                 nequips[*contequips]=i;
                                 *contequips++;
-                                nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                                nequips=realloc(nequips,sizeof(unsigned long int)* *((contequips)+1));
 
                             }
                         }
@@ -187,7 +195,7 @@ void reportaCircQry(float r,float x,float y,unsigned long int cont,FILE *report,
                                 fprintf(report,"Semaforo x:%f  y:%f\n",x2,y2);
                                 nequips[*contequips]=i;
                                 *contequips++;
-                                nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                                nequips=realloc(nequips,sizeof(unsigned long int)* *((contequips)+1));
 
                             }
                         }
@@ -202,7 +210,7 @@ void reportaCircQry(float r,float x,float y,unsigned long int cont,FILE *report,
                             fprintf(report,"Hidrante x:%f  y:%f\n",x2,y2);
                             nequips[*contequips]=i;
                             *contequips++;
-                            nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                            nequips=realloc(nequips,sizeof(unsigned long int)* *((contequips)+1));
 
                         }
                     }
@@ -218,7 +226,7 @@ void reportaCircQry(float r,float x,float y,unsigned long int cont,FILE *report,
                         fprintf(report,"Quadra x:%f  y:%f\n",x2,y2);
                         nequips[*contequips]=i;
                         *contequips++;
-                        nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                        nequips=realloc(nequips,sizeof(unsigned long int)* *((contequips)+1));
 
                     }
                 }
@@ -234,12 +242,12 @@ void reportaCircQry(float r,float x,float y,unsigned long int cont,FILE *report,
                     fprintf(report,"Retangulo x:%f  y:%f\n",x2,y2);
                     nequips[*contequips]=i;
                     *contequips++;
-                    nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                    nequips=realloc(nequips,sizeof(unsigned long int)* *((contequips)+1));
 
                 }
             }
         }
-        else
+        else if (circ!=NULL)
         {
             x2=devolveXCirculo(circ);
             y2=devolveYCirculo(circ);
@@ -249,7 +257,7 @@ void reportaCircQry(float r,float x,float y,unsigned long int cont,FILE *report,
                 fprintf(report,"Circulo x:%f  y:%f\n",x2,y2);
                 nequips[*contequips]=i;
                 *contequips++;
-                nequips=realloc(nequips,sizeof(unsigned long int)* *(contequips));
+                nequips=realloc(nequips,sizeof(unsigned long int)* *((contequips)+1));
 
             }
         }

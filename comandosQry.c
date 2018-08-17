@@ -22,8 +22,10 @@ void executarQry(char *token,char *qry,char *nomebase,unsigned long int cont,fg 
 	int tam;
 	int sizefile=0;
 	int i=0;
-	unsigned long int *nequips,contequips=0;
+	unsigned long int *nequips,*contequips;
 	nequips=malloc(sizeof(unsigned long int));
+	contequips=malloc(sizeof(unsigned long int));
+	*contequips=0;
 	arquivoreport=malloc(sizeof(char)*strlen(nomebase)+7);
 	strcpy(arquivoreport,nomebase);
 	arquivoreport[strlen(nomebase)+i]='r';
@@ -68,6 +70,7 @@ void executarQry(char *token,char *qry,char *nomebase,unsigned long int cont,fg 
 	qry[j+i]='\0';
 	while (1)
 	{
+		sizefile=0;
         c=fgetc(e);
         while (c!= EOF && c!='\n' && c!='\r')
 	    {
@@ -90,7 +93,7 @@ void executarQry(char *token,char *qry,char *nomebase,unsigned long int cont,fg 
         info=strtok(NULL," ");
         element4=info;
 		fprintf(sig,"<rect x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\" stroke=\"black\" fill=\"transparent\"  stroke-dasharray=\"10\"/></rect>\n",atof(element1),atof(element2),atof(element3),atof(element4));
-		reportaRetQry(atof(element1),atof(element2),atof(element3),atof(element4),cont,report,nequips,&contequips,fgeo);
+		reportaRetQry(atof(element1),atof(element2),atof(element3),atof(element4),cont,report,nequips,contequips,fgeo);
 	}
 	else if(ch[0]=='Q' && ch[1]=='?')   //reporta no circulo
 	{
@@ -103,7 +106,6 @@ void executarQry(char *token,char *qry,char *nomebase,unsigned long int cont,fg 
         element3=info;
 		fprintf(sig,"<circle cx=\"%f\" cy=\"%f\" r=\"%f\"  stroke-width=\"3\" stroke=\"black\" fill=\"transparent\" stroke-dasharray=\"10\"/>\n",atof(element1),atof(element2),atof(element3));
 		reportaCircQry(atof(element1),atof(element2),atof(element3),cont,report,nequips,&contequips,fgeo);
-		printf("\n!!!\n");
 	}
 	else if(ch[0]=='d' && ch[1]=='q')   //remove quadra no retangulo
 	{
